@@ -14,7 +14,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Drop2.GAME_WIDTH, Drop2.GAME_HEIGHT);
     }
 
     public void show() {

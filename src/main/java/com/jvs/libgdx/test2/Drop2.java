@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Drop2 extends Game {
 
+    static int GAME_WIDTH = 800;
+    static int GAME_HEIGHT = 480;
+
     public SpriteBatch batch;
     public BitmapFont font;
 

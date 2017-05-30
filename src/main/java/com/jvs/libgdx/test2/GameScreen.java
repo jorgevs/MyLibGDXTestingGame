@@ -49,11 +49,11 @@ public class GameScreen implements Screen {
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Drop2.GAME_WIDTH, Drop2.GAME_HEIGHT);
 
         // create a Rectangle to logically represent the bucket
         bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        bucket.x = Drop2.GAME_WIDTH / 2 - 64 / 2; // center the bucket horizontally
         bucket.y = 20; // bottom left corner of the bucket is 20 pixels above the bottom screen edge
         bucket.width = 64;
         bucket.height = 64;
@@ -68,8 +68,8 @@ public class GameScreen implements Screen {
 
     private void spawnRaindrop() {
         Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, 800 - 64);
-        raindrop.y = 480;
+        raindrop.x = MathUtils.random(0, Drop2.GAME_WIDTH - 64);
+        raindrop.y = Drop2.GAME_HEIGHT;
         raindrop.width = 64;
         raindrop.height = 64;
         raindrops.add(raindrop);
@@ -101,10 +101,10 @@ public class GameScreen implements Screen {
 
         // begin a new batch and draw the bucket and all drops
         game.batch.begin();
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, Drop2.GAME_HEIGHT);
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
         for (Rectangle raindrop : raindrops) {
-            game.batch.draw(dropImage, raindrop.x, raindrop.y);
+            game.batch.draw(dropImage, raindrop.x, raindrop.y, raindrop.width, raindrop.height);
         }
         game.batch.end();
 
@@ -119,7 +119,7 @@ public class GameScreen implements Screen {
 
         // make sure the bucket stays within the screen bounds
         if (bucket.x < 0) bucket.x = 0;
-        if (bucket.x > 800 - 64) bucket.x = 800 - 64;
+        if (bucket.x > Drop2.GAME_WIDTH - 64) bucket.x = Drop2.GAME_WIDTH - 64;
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
