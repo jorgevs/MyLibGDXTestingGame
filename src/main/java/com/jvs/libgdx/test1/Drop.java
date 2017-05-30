@@ -1,3 +1,5 @@
+package com.jvs.libgdx.test1;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,22 +18,25 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.Iterator;
 
 
-public class MyGame extends ApplicationAdapter {
+public class Drop extends ApplicationAdapter {
 
     private Texture dropImage;
     private Texture bucketImage;
     private Sound dropSound;
     private Music rainMusic;
-    private SpriteBatch batch;
+
     private OrthographicCamera camera;
+    private SpriteBatch batch;
+
     private Rectangle bucket;
     private Array<Rectangle> raindrops;
+
     private long lastDropTime;
+    private Vector3 touchPos;
 
     @Override
     public void create() {
         // load the images for the droplet and the bucket, 64x64 pixels each
-        Gdx.app.log("path: ", Gdx.files.getLocalStoragePath());
         dropImage = new Texture(Gdx.files.internal("src/main/resources/assets/droplet.png"));
         bucketImage = new Texture(Gdx.files.internal("src/main/resources/assets/bucket.png"));
 
@@ -55,6 +60,9 @@ public class MyGame extends ApplicationAdapter {
         bucket.width = 64;
         bucket.height = 64;
 
+        // initializes the touch position used to store the mouse position when its pressed
+        touchPos = new Vector3();
+
         // create the raindrops array and spawn the first raindrop
         raindrops = new Array<Rectangle>();
         spawnRaindrop();
@@ -67,6 +75,8 @@ public class MyGame extends ApplicationAdapter {
         raindrop.width = 64;
         raindrop.height = 64;
         raindrops.add(raindrop);
+
+        // gets the actual time
         lastDropTime = TimeUtils.nanoTime();
     }
 
@@ -86,8 +96,7 @@ public class MyGame extends ApplicationAdapter {
         // coordinate system specified by the camera.
         batch.setProjectionMatrix(camera.combined);
 
-        // begin a new batch and draw the bucket and
-        // all drops
+        // begin a new batch and draw the bucket and all drops
         batch.begin();
         batch.draw(bucketImage, bucket.x, bucket.y);
         for(Rectangle raindrop: raindrops) {
@@ -97,7 +106,6 @@ public class MyGame extends ApplicationAdapter {
 
         // process user input
         if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             bucket.x = touchPos.x - 64 / 2;
@@ -110,7 +118,9 @@ public class MyGame extends ApplicationAdapter {
         if(bucket.x > 800 - 64) bucket.x = 800 - 64;
 
         // check if we need to create a new raindrop
-        if(TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
+        if(TimeUtils.nanoTime() - lastDropTime > 1000000000) {
+            spawnRaindrop();
+        }
 
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we play back
@@ -118,6 +128,7 @@ public class MyGame extends ApplicationAdapter {
         Iterator<Rectangle> iter = raindrops.iterator();
         while(iter.hasNext()) {
             Rectangle raindrop = iter.next();
+            // move the raindrops at a constant speed of 200 pixels/units per second.
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
             if(raindrop.y + 64 < 0) iter.remove();
             if(raindrop.overlaps(bucket)) {
