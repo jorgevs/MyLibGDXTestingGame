@@ -25,6 +25,6 @@ public class Drop2 extends Game {
         batch.dispose();
         font.dispose();
 
-        //this.getScreen().dispose();
+        this.getScreen().dispose();
     }
 }
