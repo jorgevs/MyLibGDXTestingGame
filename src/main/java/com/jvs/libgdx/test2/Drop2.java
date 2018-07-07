@@ -21,13 +21,14 @@ public class Drop2 extends Game {
     }
 
     public void render() {
-        super.render(); //important!
+        super.render(); // Important!
     }
 
     public void dispose() {
+        // dispose the actual com.mygdx.obstacleavoid.screen object
+        getScreen().dispose(); // Important!
+
         batch.dispose();
         font.dispose();
-
-        this.getScreen().dispose();
     }
 }

@@ -54,4 +54,9 @@ public class Scene2DImages extends ApplicationAdapter {
         stage.act();
         stage.draw();
     }
+
+    @Override
+    public void dispose () {
+        stage.dispose();
+    }
 }

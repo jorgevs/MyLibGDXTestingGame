@@ -2,10 +2,11 @@ package com.jvs.libgdx.test2;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends ScreenAdapter {
 
     final Drop2 game;
     OrthographicCamera camera;
@@ -17,10 +18,11 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, Drop2.GAME_WIDTH, Drop2.GAME_HEIGHT);
     }
 
+    @Override
     public void show() {
-
     }
 
+    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.4f, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -41,23 +43,14 @@ public class MainMenuScreen implements Screen {
         }
     }
 
-    public void resize(int i, int i1) {
-
-    }
-
-    public void pause() {
-
-    }
-
-    public void resume() {
-
-    }
-
+    @Override
     public void hide() {
-
+        // NOTE: screens don't dispose automatically
+        dispose();
     }
 
+    @Override
     public void dispose() {
-        // nothing to dispose of in this class so far
+        // Nothing to dispose in this screen
     }
 }
